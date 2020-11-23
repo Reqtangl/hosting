@@ -1,0 +1,34 @@
+[Unit]
+Description=A high performance web server and a reverse proxy server
+After=network.target nss-lookup.target
+
+[Service]
+Type=forking
+PIDFile=/run/nginx.pid
+LimitNOFILE=100000
+TimeoutStartSec=600
+TimeoutStopSec=5
+KillMode=mixed
+ExecStop=/usr/sbin/nginx -s stop
+ExecStartPre=/usr/sbin/nginx -t -q
+ExecStart=/usr/sbin/nginx
+ExecReload=/usr/sbin/nginx -s reload
+ProtectSystem=strict
+PrivateTmp=true
+NoNewPrivileges=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+LockPersonality=true
+SystemCallArchitectures=native
+ReadWritePaths=-/var/log/nginx/
+ReadWritePaths=-/var/lib/nginx/
+ReadWritePaths=-/var/www/var/run/
+ReadWritePaths=-/var/spool/postfix/
+ReadWritePaths=-/run/
+InaccessiblePaths=-/root/
+RuntimeDirectory=nginx
+
+[Install]
+WantedBy=multi-user.target
